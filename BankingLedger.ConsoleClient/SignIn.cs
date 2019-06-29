@@ -14,31 +14,8 @@ namespace BankingLedger.ConsoleClient
 			RenderTitle();
 			Console.CursorVisible = true;
 
-			string username;
-			do
-			{
-				Console.Write("Username: ");
-				username = Console.ReadLine();
-			}
-			while (string.IsNullOrWhiteSpace(username));
-
-			Console.Write("Password: ");
-			var password = string.Empty;
-
-			var keyInfo = Console.ReadKey(true);
-			while (keyInfo.Key != ConsoleKey.Enter)
-			{
-				if (keyInfo.Key != ConsoleKey.Backspace)
-				{
-					password += keyInfo.KeyChar.ToString();
-				}
-				else
-				{
-					password = password.Substring(0, password.Length - 1);
-				}
-
-				keyInfo = Console.ReadKey(true);
-			}
+			var username = InputHelpers.InputNonEmptyString("Username: ");
+			var password = InputHelpers.InputPassword("Password: ");
 
 			var signInMsg = await Context.HttpClient.PostAsJsonAsync(new Uri(Context.ApiUri, "account/signin"), new { username, password });
 

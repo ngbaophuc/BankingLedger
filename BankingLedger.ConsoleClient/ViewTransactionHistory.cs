@@ -15,41 +15,18 @@ namespace BankingLedger.ConsoleClient
 			RenderTitle();
 			Console.CursorVisible = true;
 
-			DateTime frm = default;
-			string frmInput;
-			do
-			{
-				Console.Write("From (e.g., Jan 1, 2019 1:05:30am): ");
-				frmInput = Console.ReadLine();
-			}
-			while (!string.IsNullOrWhiteSpace(frmInput) && !DateTime.TryParse(frmInput, out frm));
+			var frm = InputHelpers.InputDateTime("From (e.g., Jan 1, 2019 1:05:30am): ");
+			var to = InputHelpers.InputDateTime("To (e.g., Jan 31, 2019 11:55:55pm): ");
 
-			string dateFrm = string.IsNullOrWhiteSpace(frmInput) 
-				? string.Empty 
-				: frm.ToUniversalTime().ToString("yyyy'-'MM'-'dd'T'HH':'mm':'ss'Z'");
-
-			DateTime to = default;
-			string toInput;
-			do
-			{
-				Console.Write("To (e.g., Jan 31, 2019 11:55:55pm): ");
-				toInput = Console.ReadLine();
-			}
-			while (!string.IsNullOrWhiteSpace(toInput) && !DateTime.TryParse(toInput, out to));
-
-			string dateTo = string.IsNullOrWhiteSpace(toInput) 
-				? string.Empty 
-				: to.ToUniversalTime().ToString("yyyy'-'MM'-'dd'T'HH':'mm':'ss'Z'");
-
-			var viewTransactionsMsg = await Context.HttpClient.GetAsync(new Uri(Context.ApiUri, $"transaction/transactions?from={dateFrm}&to={dateTo}"));
+			var viewTransactionsMsg = await Context.HttpClient.GetAsync(new Uri(Context.ApiUri, $"transaction/transactions?from={frm}&to={to}"));
 
 			if (viewTransactionsMsg.IsSuccessStatusCode)
 			{
 				var transactionHistoryInfo = await viewTransactionsMsg.Content.ReadAsAsync<TransactionHistoryInfo>();
 
 				Console.WriteLine();
-				Console.WriteLine(transactionHistoryInfo.Transactions.Count() > 0 
-					? "Transactions:" 
+				Console.WriteLine(transactionHistoryInfo.Transactions.Count() > 0
+					? "Transactions:"
 					: "You don't have any transactions in this period.");
 
 				foreach (var tran in transactionHistoryInfo.Transactions)

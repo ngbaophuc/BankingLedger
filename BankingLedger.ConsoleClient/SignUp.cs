@@ -14,64 +14,16 @@ namespace BankingLedger.ConsoleClient
 			RenderTitle();
 			Console.CursorVisible = true;
 
-			string username;
-			do
-			{
-				Console.Write("Username: ");
-				username = Console.ReadLine();
-			}
-			while (string.IsNullOrWhiteSpace(username));
-
-			Console.Write("First Name: ");
-			var firstName = Console.ReadLine();
-
-			Console.Write("Last Name: ");
-			var lastName = Console.ReadLine();
-
+			var username = InputHelpers.InputNonEmptyString("Username: ");
+			var firstName = InputHelpers.InputString("First Name: ");
+			var lastName = InputHelpers.InputString("Last Name: ");
 			var password = "password";
 			var confirmPassword = "confirmPassword";
 
 			while (password != confirmPassword || password.Trim().Length < 3)
 			{
-				Console.Write("Password: ");
-				password = string.Empty;
-
-				var keyInfo = Console.ReadKey(true);
-				while (keyInfo.Key != ConsoleKey.Enter)
-				{
-					if (keyInfo.Key != ConsoleKey.Backspace)
-					{
-						password += keyInfo.KeyChar.ToString();
-					}
-					else
-					{
-						password = password.Substring(0, password.Length - 1);
-					}
-
-					keyInfo = Console.ReadKey(true);
-				}
-
-				Console.WriteLine();
-
-				Console.Write("Confirm Password: ");
-				confirmPassword = string.Empty;
-
-				keyInfo = Console.ReadKey(true);
-				while (keyInfo.Key != ConsoleKey.Enter)
-				{
-					if (keyInfo.Key != ConsoleKey.Backspace)
-					{
-						confirmPassword += keyInfo.KeyChar.ToString();
-					}
-					else
-					{
-						confirmPassword = confirmPassword.Substring(0, password.Length - 1);
-					}
-
-					keyInfo = Console.ReadKey(true);
-				}
-
-				Console.WriteLine();
+				password = InputHelpers.InputPassword("Password: ");
+				confirmPassword = InputHelpers.InputPassword("Confirm Password: ");
 
 				if (password != confirmPassword)
 				{
