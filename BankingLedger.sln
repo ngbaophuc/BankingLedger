@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29009.5
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BankingLedger.Api", "BankingLedger.Api\BankingLedger.Api.csproj", "{3FD851CA-3C1E-4794-800C-DD45E7D219A6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BankingLedger.ConsoleClient", "BankingLedger.ConsoleClient\BankingLedger.ConsoleClient.csproj", "{891BEB9E-D821-41BA-9DC1-EDEF84955B68}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{3FD851CA-3C1E-4794-800C-DD45E7D219A6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3FD851CA-3C1E-4794-800C-DD45E7D219A6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3FD851CA-3C1E-4794-800C-DD45E7D219A6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3FD851CA-3C1E-4794-800C-DD45E7D219A6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{891BEB9E-D821-41BA-9DC1-EDEF84955B68}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{891BEB9E-D821-41BA-9DC1-EDEF84955B68}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{891BEB9E-D821-41BA-9DC1-EDEF84955B68}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{891BEB9E-D821-41BA-9DC1-EDEF84955B68}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {4623D645-5C05-47E9-8D43-2CA6C3259C24}
+	EndGlobalSection
+EndGlobal
