@@ -25,7 +25,9 @@ namespace BankingLedger.ConsoleClient
 			{
 				Console.WriteLine("Error: Username or password are incorrect.");
 				Console.ReadKey();
-				await Context.CommandStack.Pop().ExecuteAsync();
+
+				if (Context.CommandStack.Count > 0)
+					await Context.CommandStack.Pop().ExecuteAsync();
 			}
 			else if (signInMsg.IsSuccessStatusCode)
 			{
@@ -38,7 +40,9 @@ namespace BankingLedger.ConsoleClient
 			{
 				Console.WriteLine("Error: Unknown. Please try again later.");
 				Console.ReadKey();
-				await Context.CommandStack.Pop().ExecuteAsync();
+
+				if (Context.CommandStack.Count > 0)
+					await Context.CommandStack.Pop().ExecuteAsync();
 			}
 		}
 	}

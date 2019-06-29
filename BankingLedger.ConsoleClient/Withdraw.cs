@@ -35,7 +35,8 @@ namespace BankingLedger.ConsoleClient
 
 			Console.ReadKey();
 
-			await Context.CommandStack.Pop().ExecuteAsync();
+			if (Context.CommandStack.Count > 0)
+				await Context.CommandStack.Pop().ExecuteAsync();
 		}
 	}
 }

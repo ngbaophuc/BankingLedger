@@ -13,10 +13,10 @@ namespace BankingLedger.ConsoleClient
 			Children.Add(new SignOut(context));
 		}
 
-		public override Task ExecuteAsync()
+		public override async Task ExecuteAsync()
 		{
 			Context.CommandStack.Clear();
-			return base.ExecuteAsync();
+			await base.ExecuteAsync();
 		}
 	}
 }
