@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 
@@ -21,14 +22,19 @@ namespace BankingLedger.ConsoleClient
 
 			if (depositMsg.IsSuccessStatusCode)
 			{
-				Console.WriteLine($"You has successfully deposited {amount} into your account.");
+				OutputHelpers.Notify($"You has successfully deposited {amount} into your account.");
+			}
+			else if (depositMsg.StatusCode == HttpStatusCode.Unauthorized)
+			{
+				OutputHelpers.Notify("Your session has timed out.");
+				await Context.RemoveTokenAsync();
+
+				return;
 			}
 			else
 			{
-				Console.WriteLine("Error: Unknown. Please try again later.");
+				OutputHelpers.Notify("Error: Unknown. Please try again later.");
 			}
-
-			Console.ReadKey();
 
 			if (Context.CommandStack.Count > 0)
 				await Context.CommandStack.Pop().ExecuteAsync();

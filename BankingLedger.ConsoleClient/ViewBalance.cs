@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 
@@ -18,14 +19,19 @@ namespace BankingLedger.ConsoleClient
 			if (viewBalanceMsg.IsSuccessStatusCode)
 			{
 				var balanceInfo = await viewBalanceMsg.Content.ReadAsAsync<BalanceInfo>();
-				Console.WriteLine($"Your balance is: {balanceInfo.Balance}");
+
+				OutputHelpers.Notify($"Your balance is: {balanceInfo.Balance}");
+			}
+			else if (viewBalanceMsg.StatusCode == HttpStatusCode.Unauthorized)
+			{
+				OutputHelpers.Notify("Your session has timed out.");
+				await Context.RemoveTokenAsync();
+				return;
 			}
 			else
 			{
-				Console.WriteLine("Error: Unknown. Please try again later.");
+				OutputHelpers.Notify("Error: Unknown. Please try again later.");
 			}
-
-			Console.ReadKey();
 
 			if (Context.CommandStack.Count > 0)
 				await Context.CommandStack.Pop().ExecuteAsync();

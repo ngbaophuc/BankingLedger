@@ -1,11 +1,13 @@
-﻿using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Threading.Tasks;
 
 namespace BankingLedger.ConsoleClient
 {
+	public delegate Task AsyncEventHandler(object sender, EventArgs e);
+
 	interface IContext : IDisposable
 	{
 		Uri ApiUri { get; }
@@ -14,13 +16,23 @@ namespace BankingLedger.ConsoleClient
 
 		Stack<CommandBase> CommandStack { get; }
 
-		void SetToken(string token);
+		UserProfile UserProfile { get; }
 
-		void RemoveToken();
+		event AsyncEventHandler OnAuthenticated;
+
+		event AsyncEventHandler OnUnauthenticated;
+
+		Task SetTokenAsync(string token);
+
+		Task RemoveTokenAsync();
+
+		Task StartAsync();
 	}
 
 	class Context : IContext
 	{
+		string _token = default;
+
 		public Context(Uri apiUrl)
 		{
 			ApiUri = apiUrl;
@@ -32,39 +44,69 @@ namespace BankingLedger.ConsoleClient
 
 		public Stack<CommandBase> CommandStack { get; } = new Stack<CommandBase>();
 
-		public async System.Threading.Tasks.Task<bool> AuthenticatedAsync()
-		{
-			var profileUri = new Uri(ApiUri, "account/user_profile");
-			HttpResponseMessage userProfileResponse = await HttpClient.GetAsync(profileUri);
+		public UserProfile UserProfile { get; internal set; }
 
-			return userProfileResponse.IsSuccessStatusCode;
-		}
+		public event AsyncEventHandler OnAuthenticated;
+
+		public event AsyncEventHandler OnUnauthenticated;
 
 		public void Dispose()
 		{
 			HttpClient.Dispose();
 		}
 
-		public void RemoveToken()
+		public async Task RemoveTokenAsync()
 		{
-			HttpClient.DefaultRequestHeaders.Authorization = null;
+			if (_token == default) return;
+
+			_token = default;
+			UserProfile = default;
+			HttpClient.DefaultRequestHeaders.Authorization = default;
+
+			if (OnUnauthenticated != null)
+				await OnUnauthenticated(this, EventArgs.Empty);
 		}
 
-		public async System.Threading.Tasks.Task RenderScreenAsync()
+		public async Task SetTokenAsync(string token)
 		{
-			if (await AuthenticatedAsync())
+			if (token == _token) return;
+
+			HttpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
+			var getUserProfileMsg = await HttpClient.GetAsync(new Uri(ApiUri, "account/user_profile"));
+
+			if (!getUserProfileMsg.IsSuccessStatusCode)
 			{
-				await new AuthenticatedScreen(this).ExecuteAsync();
+				await RemoveTokenAsync();
+				return;
+			}
+
+			_token = token;
+			UserProfile = await getUserProfileMsg.Content.ReadAsAsync<UserProfile>();
+
+			if (OnAuthenticated != null)
+				await OnAuthenticated(this, EventArgs.Empty);
+		}
+
+		public async Task StartAsync()
+		{
+			if (HttpClient.DefaultRequestHeaders.Authorization == default)
+			{
+				if (OnUnauthenticated != null)
+					await OnUnauthenticated(this, EventArgs.Empty);
 			}
 			else
 			{
-				await new UnauthenticatedScreen(this).ExecuteAsync();
+				if (OnAuthenticated != null)
+					await OnAuthenticated(this, EventArgs.Empty);
 			}
 		}
+	}
 
-		public void SetToken(string token)
-		{
-			HttpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
-		}
+	class UserProfile
+	{
+		public string Username { get; set; }
+		public string FirstName { get; set; }
+		public string LastName { get; set; }
 	}
 }

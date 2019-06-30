@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Net.Http;
-using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace BankingLedger.ConsoleClient
@@ -22,18 +21,23 @@ namespace BankingLedger.ConsoleClient
 
 			if (withdrawMsg.IsSuccessStatusCode)
 			{
-				Console.WriteLine($"You has successfully withdrawed {amount} from your account.");
+				OutputHelpers.Notify($"You has successfully withdrawed {amount} from your account.");
+			}
+			else if (withdrawMsg.StatusCode == System.Net.HttpStatusCode.Unauthorized)
+			{
+				OutputHelpers.Notify("Your session has timed out.");
+				await Context.RemoveTokenAsync();
+
+				return;
 			}
 			else if (withdrawMsg.StatusCode == System.Net.HttpStatusCode.BadRequest)
 			{
-				Console.WriteLine($"Error: Your withdrawal amount is invalid.");
+				OutputHelpers.Notify($"Error: Your withdrawal amount is invalid.");
 			}
 			else
 			{
-				Console.WriteLine("Error: Unknown. Please try again later.");
+				OutputHelpers.Notify("Error: Unknown. Please try again later.");
 			}
-
-			Console.ReadKey();
 
 			if (Context.CommandStack.Count > 0)
 				await Context.CommandStack.Pop().ExecuteAsync();

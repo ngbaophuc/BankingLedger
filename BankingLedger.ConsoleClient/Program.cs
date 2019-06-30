@@ -12,7 +12,10 @@ namespace BankingLedger.ConsoleClient
 
 			using (var context = new Context(apiUrl))
 			{
-				await context.RenderScreenAsync();
+				context.OnAuthenticated += async (sender, e) => await new AuthenticatedScreen(context).ExecuteAsync();
+				context.OnUnauthenticated += async (sender, e) => await new UnauthenticatedScreen(context).ExecuteAsync();
+
+				await context.StartAsync();
 			}
 		}
 	}

@@ -34,13 +34,18 @@ namespace BankingLedger.ConsoleClient
 					Console.Write($"{tran.DateTime.ToLocalTime().ToString()}: {(tran.Amount > 0 ? "Deposit " : "Withdraw")} {Math.Abs(tran.Amount)}");
 					Console.WriteLine();
 				}
+
+				Console.ReadKey();
+			}
+			else if (viewTransactionsMsg.StatusCode == System.Net.HttpStatusCode.Unauthorized)
+			{
+				OutputHelpers.Notify("Your session has timed out.");
+				await Context.RemoveTokenAsync();
 			}
 			else
 			{
-				Console.WriteLine("Error: Unknown. Please try again later.");
+				OutputHelpers.Notify("Error: Unknown. Please try again later.");
 			}
-
-			Console.ReadKey();
 
 			if (Context.CommandStack.Count > 0)
 				await Context.CommandStack.Pop().ExecuteAsync();

@@ -23,8 +23,7 @@ namespace BankingLedger.ConsoleClient
 
 			if (signInMsg.StatusCode == HttpStatusCode.Unauthorized)
 			{
-				Console.WriteLine("Error: Username or password are incorrect.");
-				Console.ReadKey();
+				OutputHelpers.Notify("Error: Username or password are incorrect.");
 
 				if (Context.CommandStack.Count > 0)
 					await Context.CommandStack.Pop().ExecuteAsync();
@@ -33,13 +32,11 @@ namespace BankingLedger.ConsoleClient
 			{
 				var tokenInfo = await signInMsg.Content.ReadAsAsync<TokenInfo>();
 
-				Context.SetToken(tokenInfo.Token);
-				await new AuthenticatedScreen(Context).ExecuteAsync();
+				await Context.SetTokenAsync(tokenInfo.Token);
 			}
 			else
 			{
-				Console.WriteLine("Error: Unknown. Please try again later.");
-				Console.ReadKey();
+				OutputHelpers.Notify("Error: Unknown. Please try again later.");
 
 				if (Context.CommandStack.Count > 0)
 					await Context.CommandStack.Pop().ExecuteAsync();

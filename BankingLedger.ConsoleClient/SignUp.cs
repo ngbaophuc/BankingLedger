@@ -46,18 +46,16 @@ namespace BankingLedger.ConsoleClient
 
 			if (signUpMsg.StatusCode == HttpStatusCode.BadRequest)
 			{
-				Console.WriteLine("Error: Username is registered.");
+				OutputHelpers.Notify("Error: Username is registered.");
 			}
 			else if (signUpMsg.IsSuccessStatusCode)
 			{
-				Console.WriteLine("Your account has been created.");
+				OutputHelpers.Notify("Your account has been created.");
 			}
 			else
 			{
-				Console.WriteLine("Error: Unknown. Please try again later.");
+				OutputHelpers.Notify("Error: Unknown. Please try again later.");
 			}
-
-			Console.ReadKey();
 
 			if (Context.CommandStack.Count > 0)
 				await Context.CommandStack.Pop().ExecuteAsync();

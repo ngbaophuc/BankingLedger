@@ -18,7 +18,7 @@ namespace BankingLedger.ConsoleClient
 			if (Children.Count <= 0) return;
 
 			Console.CursorVisible = false;
-			Console.WriteLine("Please choose:");
+			Console.WriteLine($"{(Context.UserProfile != null ? $"Hello {Context.UserProfile.FirstName} {Context.UserProfile.LastName}, p" : "P")}lease choose:");
 
 			for (int i = 0; i < Children.Count; i++)
 			{

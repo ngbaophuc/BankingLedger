@@ -1,5 +1,4 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 
 namespace BankingLedger.ConsoleClient
 {
@@ -9,8 +8,7 @@ namespace BankingLedger.ConsoleClient
 
 		public override async Task ExecuteAsync()
 		{
-			Context.RemoveToken();
-			await new UnauthenticatedScreen(Context).ExecuteAsync();
+			await Context.RemoveTokenAsync();
 		}
 	}
 }
