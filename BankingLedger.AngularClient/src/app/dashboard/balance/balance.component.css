@@ -1,0 +1,9 @@
+.balance-amount {
+    font-size: 4em;
+    line-height: 0.8em;
+    text-align: right;
+}
+
+.balance-label {
+    margin-bottom: 0.5rem;
+}

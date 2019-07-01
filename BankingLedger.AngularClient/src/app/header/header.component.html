@@ -1,0 +1,8 @@
+<div style="text-align:center">
+    <h1>
+        {{ title }}
+    </h1>
+    <p *ngIf="authenticated; else unauthenticatedMessage">Hello {{name}} | <a href="javascript:void(0)" (click)="signOut()">Sign Out</a></p>
+    <ng-template #unauthenticatedMessage><p>Please sign up or sign in</p></ng-template>
+    </div>
+<hr />

@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { AccountService } from '../account.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -6,10 +7,26 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./dashboard.component.css']
 })
 export class DashboardComponent implements OnInit {
+  balance = 0;
 
-  constructor() { }
+  constructor(private service: AccountService) { }
 
   ngOnInit() {
   }
 
+  deposited() {
+    this.service.getBalance().subscribe(res => {
+      this.balance = res['balance'];
+    }, err => {
+
+    });
+  }
+
+  withdrawed() {
+    this.service.getBalance().subscribe(res => {
+      this.balance = res['balance'];
+    }, err => {
+
+    });
+  }
 }

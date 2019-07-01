@@ -1,0 +1,12 @@
+<form [formGroup]="withdrawForm" (ngSubmit)="onSubmit()">
+    <div class="form-group">
+        <label for="withdrawInput">Withdraw</label>
+        <input id="withdrawInput" 
+            type="number" 
+            class="form-control" 
+            placeholder="Enter amout to withdraw"
+            formControlName="amount">
+    </div>
+    <button type="submit" class="btn btn-primary">Withdraw</button>
+    <p></p>
+</form>

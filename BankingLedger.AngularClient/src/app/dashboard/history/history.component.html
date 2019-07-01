@@ -1,0 +1,15 @@
+<p>Recent transactions</p>
+
+<table class="transaction-table">
+    <tr *ngFor="let t of transactions">
+        <td>
+            {{t.time}}
+        </td>
+        <td>
+            {{t.transaction}}
+        </td>
+        <td style="text-align: right">
+            {{t.amount}}
+        </td>
+    </tr>
+</table>

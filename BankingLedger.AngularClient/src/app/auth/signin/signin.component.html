@@ -1,0 +1,32 @@
+<form (ngSubmit)="onSubmit(signInForm)" #signInForm="ngForm">
+    <div class="form-group">
+        <label for="signInUsername">User Name</label>
+        <input id="signInUsername" 
+            type="text" 
+            class="form-control" 
+            placeholder="Enter user name"
+            ngModel
+            name="username"
+            required
+            #username="ngModel">
+        <small class="text-danger"
+            *ngIf="!username.valid && username.touched">Please provide your username.</small>
+    </div>
+    <div class="form-group">
+        <label for="signInPassword">Password</label>
+        <input id="signInPassword" 
+            type="password" 
+            class="form-control" 
+            placeholder="Enter password" 
+            ngModel 
+            name="password" 
+            required
+            #password="ngModel">
+        <small class="text-danger"
+            *ngIf="!password.valid && password.touched">Please provide your password.</small>
+    </div>
+    <button type="submit" [disabled]="!signInForm.valid" class="btn btn-primary">Sign In</button>
+    <p></p>
+    <div *ngIf="errorMessage" class="alert alert-danger" role="alert">{{errorMessage}}</div>
+    <p></p>
+</form>

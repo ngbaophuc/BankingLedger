@@ -1,0 +1,5 @@
+.transaction-table td {
+    padding-right: 15px;
+    font-weight: 500;
+    font-family: 'Courier New', Courier, monospace;
+}

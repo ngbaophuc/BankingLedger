@@ -1,0 +1,55 @@
+<form [formGroup]="signUpForm" (ngSubmit)="onSubmit()">
+    <div class="form-group">
+        <label for="signUpUsername">User Name</label>
+        <input id="signUpUsername" 
+            (keyup)="onUsernameKeyUp($event)"
+            type="text" 
+            class="form-control" 
+            placeholder="Enter user name" 
+            formControlName="username">
+        <small class="text-danger"
+            *ngIf="!signUpForm.get('username').valid && signUpForm.get('username').errors['required'] && signUpForm.get('username').touched">Please provide a username.</small>
+        <small class="text-danger"
+            *ngIf="!signUpForm.get('username').valid && signUpForm.get('username').errors['usernameTaken']">Username is already registered.</small>
+    </div>
+    <div class="form-group">
+        <label for="signUpFirstName">First Name</label>
+        <input id="signUpFirstName" 
+            type="text" 
+            class="form-control" 
+            placeholder="Enter first name" 
+            formControlName="firstName">
+    </div>
+    <div class="form-group">
+        <label for="signUpLastName">Last Name</label>
+        <input id="signUpLastName" 
+            type="text" 
+            class="form-control" 
+            placeholder="Enter last name" 
+            formControlName="lastName">
+        </div>
+    <div class="form-group">
+        <label for="signUpPassword">Password</label>
+        <input id="signUpPassword" 
+            type="password" 
+            class="form-control" 
+            placeholder="Enter password" 
+            formControlName="password">
+        <small class="text-danger"
+            *ngIf="!signUpForm.get('password').valid && signUpForm.get('password').errors['required'] && signUpForm.get('password').touched">Please provide a password.</small>
+    </div>
+    <div class="form-group">
+        <label for="signUpConfirmPassword">Confirm Password</label>
+        <input id="signUpConfirmPassword" 
+            type="password" 
+            class="form-control" 
+            placeholder="Confirm password" 
+            formControlName="confirmPassword">
+        <small class="text-danger"
+            *ngIf="!signUpForm.get('confirmPassword').valid && signUpForm.get('confirmPassword').errors['required'] && signUpForm.get('confirmPassword').touched">Please confirm your password.</small>
+        <small class="text-danger"
+            *ngIf="!signUpForm.get('confirmPassword').valid && signUpForm.get('confirmPassword').errors['confirmPassMismatched'] && signUpForm.get('confirmPassword').touched">Password and confirmation password are mismatched.</small>
+    </div>
+    <button type="submit" class="btn btn-primary" [disabled]="!signUpForm.valid">Sign Up</button>
+    <p></p>
+</form>

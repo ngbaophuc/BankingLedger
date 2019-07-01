@@ -1,0 +1,14 @@
+<form [formGroup]="depositForm" (ngSubmit)="onSubmit()">
+    <div class="form-group">
+        <label for="depositAmount">Deposit</label>
+        <input id="depositAmount" 
+            type="number" 
+            class="form-control" 
+            placeholder="Enter amout to deposit"
+            formControlName="amount">
+        <small class="text-danger"
+            *ngIf="!depositForm.get('amount').valid && depositForm.get('amount').touched">Please provide your amount.</small>
+    </div>
+    <button type="submit" class="btn btn-primary">Deposit</button>
+    <p></p>
+</form>

@@ -1,1 +1,12 @@
-<p>dashboard works!</p>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-6">
+            <app-balance [balance]="balance"></app-balance>
+            <app-deposit (onDeposited)="deposited($event)"></app-deposit>
+            <app-withdraw (onWithdrawed)="withdrawed($event)"></app-withdraw>
+        </div>
+        <div class="col-6">
+            <app-history></app-history>
+        </div>
+    </div>
+</div>
