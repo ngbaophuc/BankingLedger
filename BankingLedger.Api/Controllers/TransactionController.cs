@@ -18,6 +18,9 @@ namespace BankingLedger.Api.Controllers
 			if (transactionInfo.Amount <= 0)
 				return BadRequest();
 
+			var account = Ledger.Accounts.SingleOrDefault(a => a.Username == HttpContext.User.Identity.Name);
+			if (account == null) return Unauthorized();
+
 			var transaction = new Transaction
 			{
 				DateTime = DateTime.UtcNow,
@@ -27,7 +30,6 @@ namespace BankingLedger.Api.Controllers
 
 			Ledger.Transactions.Add(transaction);
 
-			var account = Ledger.Accounts.Single(a => a.Username == HttpContext.User.Identity.Name);
 			account.Balance += transactionInfo.Amount;
 
 			return StatusCode(StatusCodes.Status204NoContent);
@@ -39,7 +41,9 @@ namespace BankingLedger.Api.Controllers
 			if (transactionInfo.Amount <= 0)
 				return BadRequest();
 
-			var account = Ledger.Accounts.Single(a => a.Username == HttpContext.User.Identity.Name);
+			var account = Ledger.Accounts.SingleOrDefault(a => a.Username == HttpContext.User.Identity.Name);
+			if (account == null) return Unauthorized();
+
 			if (account.Balance < transactionInfo.Amount)
 				return BadRequest();
 
@@ -57,13 +61,32 @@ namespace BankingLedger.Api.Controllers
 		}
 
 		[HttpGet("transactions")]
-		public IActionResult GetTransactions(DateTime? from, DateTime? to)
+		public IActionResult GetTransactions(DateTime? from, DateTime? to, string order, string orderBy, int? pageSize, int? pageNum)
 		{
 			var transactions = Ledger.Transactions
 				.Where(t => t.Username == HttpContext.User.Identity.Name)
 				.Where(t => from == default || DateTime.Compare(t.DateTime, ((DateTime)from).ToUniversalTime()) >= 0)
-				.Where(t => to == default || DateTime.Compare(t.DateTime, ((DateTime)to).AddSeconds(1).ToUniversalTime()) < 0)
-				.OrderBy(t => t.DateTime);
+				.Where(t => to == default || DateTime.Compare(t.DateTime, ((DateTime)to).AddSeconds(1).ToUniversalTime()) < 0);
+
+			if (order == "asc" && orderBy == "date")
+				transactions = transactions.OrderBy(t => t.DateTime);
+			else if (order == "asc" && orderBy == "amount")
+				transactions = transactions.OrderBy(t => t.Amount);
+			else if (order == "desc" && orderBy == "date")
+				transactions = transactions.OrderByDescending(t => t.DateTime);
+			else if (order == "desc" && orderBy == "amount")
+				transactions = transactions.OrderByDescending(t => t.Amount);
+
+			if (pageSize > 0 && pageNum > 0)
+			{
+				var total = transactions.Count();
+				var skip = pageSize * (pageNum - 1);
+
+				if (skip < total)
+					transactions = transactions
+						.Skip((int)skip)
+						.Take((int)pageSize);
+			}
 
 			return Ok(new { transactions });
 		}

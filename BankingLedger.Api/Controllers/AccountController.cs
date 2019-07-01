@@ -84,7 +84,10 @@ namespace BankingLedger.Api.Controllers
 		[Authorize]
 		public IActionResult GetBalance()
 		{
-			var account = Ledger.Accounts.Single(a => a.Username == HttpContext.User.Identity.Name);
+			var account = Ledger.Accounts.SingleOrDefault(a => a.Username == HttpContext.User.Identity.Name);
+
+			if (account == null)
+				return Unauthorized();
 
 			return Ok(new { balance = account.Balance });
 		}
@@ -93,7 +96,10 @@ namespace BankingLedger.Api.Controllers
 		[Authorize]
 		public IActionResult GetUserProfile()
 		{
-			var account = Ledger.Accounts.Single(a => a.Username == HttpContext.User.Identity.Name);
+			var account = Ledger.Accounts.SingleOrDefault(a => a.Username == HttpContext.User.Identity.Name);
+
+			if (account == null)
+				return Unauthorized();
 
 			return Ok(new { username = account.Username, firstName = account.FirstName, lastName = account.LastName });
 		}
