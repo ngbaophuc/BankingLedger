@@ -90,7 +90,7 @@ namespace BankingLedger.ConsoleClient
 
 		public async Task StartAsync()
 		{
-			if (HttpClient.DefaultRequestHeaders.Authorization == default)
+			if (_token == default)
 			{
 				if (OnUnauthenticated != null)
 					await OnUnauthenticated(this, EventArgs.Empty);

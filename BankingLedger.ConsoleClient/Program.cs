@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Configuration;
+using System.Net.Http;
 using System.Threading.Tasks;
 
 namespace BankingLedger.ConsoleClient
@@ -15,7 +16,16 @@ namespace BankingLedger.ConsoleClient
 				context.OnAuthenticated += async (sender, e) => await new AuthenticatedScreen(context).ExecuteAsync();
 				context.OnUnauthenticated += async (sender, e) => await new UnauthenticatedScreen(context).ExecuteAsync();
 
-				await context.StartAsync();
+				try
+				{
+					await context.StartAsync();
+				}
+				catch (HttpRequestException)
+				{
+					Console.WriteLine();
+					OutputHelpers.Notify("Cannot connect to Banking Ledger API Server. Please try again later.");
+					await context.RemoveTokenAsync();
+				}
 			}
 		}
 	}
