@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 
 import { AccountService } from '../account.service';
 import { Subscription } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 @Component({
 	selector: 'app-header',
@@ -19,13 +20,16 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
 	ngOnInit() {
 
-		this.userSub = this.service.userProfile.subscribe(res => {
-			this.authenticated = true;
+		this.userSub = this.service.userProfile.subscribe(user => {
+			this.authenticated = !!user;
 
 			if (this.authenticated)
-				this.name = `${res['firstName']} ${res['lastName']}`;
+				this.name = `${user['firstName']} ${user['lastName']}`;
 		});
 
+		this.service.getUserProfile()
+			.pipe(map(res => <{username: string, firstName: string, lastName: string}>res))
+			.subscribe(res => this.service.userProfile.next(res));
 	}
 
 	ngOnDestroy(): void {

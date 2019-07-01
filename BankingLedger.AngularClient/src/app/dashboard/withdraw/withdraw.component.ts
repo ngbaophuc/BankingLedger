@@ -10,6 +10,7 @@ import { TransactionService } from 'src/app/transaction.service';
 export class WithdrawComponent implements OnInit {
   withdrawForm: FormGroup;
   @Output() onWithdrawed = new EventEmitter();
+  amountInvalid = false;
 
   constructor(private service: TransactionService) { }
 
@@ -26,6 +27,9 @@ export class WithdrawComponent implements OnInit {
       this.onWithdrawed.emit(withdrawInfo);
       this.service.onWithdraw.next(withdrawInfo);
       this.withdrawForm.reset();
+      this.amountInvalid = false;
+    }, err => {
+      if (err.status === 400) this.amountInvalid = true;
     });
   }
 }

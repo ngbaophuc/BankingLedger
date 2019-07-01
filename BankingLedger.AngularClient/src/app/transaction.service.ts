@@ -22,6 +22,6 @@ export class TransactionService {
   }
 
   fetchRecentTransactions(fetchTransactionsInfo: { quantity: number }) {
-    return this.http.get(environment.apiUrl + `transaction/transactions?order="asc"&orderby="date"&pagesize=${fetchTransactionsInfo.quantity}&pagenum=1`);
+    return this.http.get(environment.apiUrl + `transaction/transactions?order=desc&orderby=date&pagesize=${fetchTransactionsInfo.quantity}&pagenum=1`);
   }
 }

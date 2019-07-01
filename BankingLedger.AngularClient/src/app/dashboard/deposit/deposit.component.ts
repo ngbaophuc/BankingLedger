@@ -10,6 +10,7 @@ import { TransactionService } from 'src/app/transaction.service';
 export class DepositComponent implements OnInit {
   depositForm: FormGroup;
   @Output() onDeposited = new EventEmitter();
+  amountInvalid = false;
 
   constructor(private service: TransactionService) { }
 
@@ -25,6 +26,9 @@ export class DepositComponent implements OnInit {
       this.onDeposited.emit(depositInfo);
       this.service.onDeposit.next(depositInfo);
       this.depositForm.reset();
+      this.amountInvalid = false;
+    }, err => {
+      if (err.status === 400) this.amountInvalid = true;
     });
   }
 }

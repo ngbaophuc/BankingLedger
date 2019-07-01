@@ -6,7 +6,9 @@
             class="form-control" 
             placeholder="Enter amout to withdraw"
             formControlName="amount">
+            <small class="text-danger"
+                *ngIf="amountInvalid">Withdrawal amount is invalid.</small>
     </div>
-    <button type="submit" class="btn btn-primary">Withdraw</button>
+    <button type="submit" class="btn btn-primary" [disabled]="!withdrawForm.valid">Withdraw</button>
     <p></p>
 </form>

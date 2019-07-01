@@ -7,8 +7,8 @@
             placeholder="Enter amout to deposit"
             formControlName="amount">
         <small class="text-danger"
-            *ngIf="!depositForm.get('amount').valid && depositForm.get('amount').touched">Please provide your amount.</small>
+            *ngIf="amountInvalid">Deposit amount is invalid.</small>
     </div>
-    <button type="submit" class="btn btn-primary">Deposit</button>
+    <button type="submit" class="btn btn-primary" [disabled]="!depositForm.valid">Deposit</button>
     <p></p>
 </form>
