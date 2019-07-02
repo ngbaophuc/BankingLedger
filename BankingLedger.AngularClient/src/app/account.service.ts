@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../environments/environment';
 import { Subject } from 'rxjs';
+import { tap } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -24,7 +25,12 @@ export class AccountService {
   }
 
   getUserProfile() {
-    return this.http.get(environment.apiUrl + 'account/user_profile');
+    return this.http.get(environment.apiUrl + 'account/user_profile')
+      .pipe(tap(res => {
+        this.userProfile.next(<{username: string, firstName: string, lastName: string}>res);
+      }, _ => {
+        this.userProfile.next(null);
+      }));
   }
 
   setToken(token: string) {
@@ -33,10 +39,7 @@ export class AccountService {
     if (currentToken === token) return;
 
     localStorage.setItem('token', token);
-    this.getUserProfile()
-      .subscribe(res => {
-        this.userProfile.next(<{username: string, firstName: string, lastName: string}>res);
-      }, _ => {
+    this.getUserProfile().subscribe(_ => _, _ => {
         this.removeToken();
       });
   }

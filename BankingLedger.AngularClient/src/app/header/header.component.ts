@@ -26,10 +26,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
 			if (this.authenticated)
 				this.name = `${user['firstName']} ${user['lastName']}`;
 		});
-
-		this.service.getUserProfile()
-			.pipe(map(res => <{username: string, firstName: string, lastName: string}>res))
-			.subscribe(res => this.service.userProfile.next(res));
 	}
 
 	ngOnDestroy(): void {
