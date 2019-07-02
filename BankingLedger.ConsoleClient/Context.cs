@@ -18,15 +18,9 @@ namespace BankingLedger.ConsoleClient
 
 		UserProfile UserProfile { get; }
 
-		event AsyncEventHandler OnAuthenticated;
-
-		event AsyncEventHandler OnUnauthenticated;
-
 		Task SetTokenAsync(string token);
 
 		Task RemoveTokenAsync();
-
-		Task StartAsync();
 	}
 
 	class Context : IContext
