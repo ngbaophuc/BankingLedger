@@ -17,16 +17,12 @@ export class DashboardComponent implements OnInit {
   deposited() {
     this.service.getBalance().subscribe(res => {
       this.balance = res['balance'];
-    }, err => {
-
     });
   }
 
   withdrawed() {
     this.service.getBalance().subscribe(res => {
       this.balance = res['balance'];
-    }, err => {
-
     });
   }
 }

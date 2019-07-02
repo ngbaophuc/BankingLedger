@@ -32,7 +32,10 @@ export class HistoryComponent implements OnInit, OnDestroy {
     this.service.fetchRecentTransactions({quantity: 20})
     .subscribe(res => {
       this.transactions = (<{dateTime: Date, username: string, amount: number}[]>res['transactions'])
-        .map(t => ({time: moment(t.dateTime).format('MMM D, YYYY'), transaction: t.amount < 0 ? 'Withdraw' : 'Deposit ', amount: numeral(Math.abs(t.amount)).format('0,0.00')}));
+        .map(t => ({
+          time: moment(t.dateTime).format('MMM D, YYYY'), 
+          transaction: t.amount < 0 ? 'Withdraw' : 'Deposit ', 
+          amount: numeral(Math.abs(t.amount)).format('0,0.00')}));
     });
   }
 }

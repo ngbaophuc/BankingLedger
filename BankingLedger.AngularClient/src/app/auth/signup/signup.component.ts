@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { NgForm, FormGroup, FormControl, Validators } from '@angular/forms';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { AccountService } from 'src/app/account.service';
 import { Router } from '@angular/router';
 
@@ -10,7 +10,7 @@ import { Router } from '@angular/router';
 })
 export class SignupComponent implements OnInit {
 	signUpForm: FormGroup;
-	usernameTaken: string = '';
+	private usernameTaken: string = '';
 
 	constructor(private service: AccountService, private router: Router) { }
 

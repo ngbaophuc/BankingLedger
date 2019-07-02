@@ -15,8 +15,6 @@ import { BalanceComponent } from './dashboard/balance/balance.component';
 import { HistoryComponent } from './dashboard/history/history.component';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { ApiRequestInterceptor, ErrorHandlingInterceptor } from './app.interceptor';
-import { AccountService } from './account.service';
-import { TransactionService } from './transaction.service';
 
 @NgModule({
   declarations: [
@@ -40,8 +38,8 @@ import { TransactionService } from './transaction.service';
   ],
   providers: [
     {
-      provide: HTTP_INTERCEPTORS, 
-      useClass: ApiRequestInterceptor, 
+      provide: HTTP_INTERCEPTORS,
+      useClass: ApiRequestInterceptor,
       multi: true
     },
     {

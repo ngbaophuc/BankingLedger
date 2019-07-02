@@ -8,7 +8,7 @@ import { AccountService } from 'src/app/account.service';
 })
 export class BalanceComponent implements OnInit {
 
-  @Input() balance = 0.00;
+  @Input() balance = 0;
 
   constructor(private service: AccountService) { }
 
