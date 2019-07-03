@@ -10,7 +10,7 @@ import * as numeral from 'numeral';
   styleUrls: ['./history.component.css']
 })
 export class HistoryComponent implements OnInit, OnDestroy {
-  transactions: {time: string, transaction: string, amount: string}[] = [];
+  transactions: any[] = [];
   
   depositSub: Subscription;
   withdrawSub: Subscription;
@@ -31,9 +31,10 @@ export class HistoryComponent implements OnInit, OnDestroy {
   fetchData() {
     this.service.fetchRecentTransactions({quantity: 20})
     .subscribe(res => {
-      this.transactions = (<{dateTime: Date, username: string, amount: number}[]>res['transactions'])
-        .map(t => ({
-          time: moment(t.dateTime).format('MMM D, YYYY'), 
+      this.transactions = res['transactions']
+        .map((t: { dateTime: moment.MomentInput; amount: number; }) => ({
+          date: moment(t.dateTime).format('MMM DD, YYYY'), 
+          time: moment(t.dateTime).format('HH:mm:ss'),
           transaction: t.amount < 0 ? 'Withdraw' : 'Deposit ', 
           amount: numeral(Math.abs(t.amount)).format('0,0.00')}));
     });

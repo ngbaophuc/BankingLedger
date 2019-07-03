@@ -1,6 +1,7 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { FormGroup, FormControl } from '@angular/forms';
 import { TransactionService } from 'src/app/transaction.service';
+import Autonumeric from 'autonumeric';
 
 @Component({
   selector: 'app-withdraw',
@@ -18,6 +19,8 @@ export class WithdrawComponent implements OnInit {
     this.withdrawForm = new FormGroup({
       'amount': new FormControl(null)
     });
+
+    new Autonumeric('#withdrawInput');
   }
 
   onSubmit() {

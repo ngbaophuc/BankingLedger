@@ -1,6 +1,7 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { FormGroup, FormControl } from '@angular/forms';
 import { TransactionService } from 'src/app/transaction.service';
+import Autonumeric from 'autonumeric';
 
 @Component({
   selector: 'app-deposit',
@@ -18,6 +19,8 @@ export class DepositComponent implements OnInit {
     this.depositForm = new FormGroup({
       'amount': new FormControl(null)
     });
+
+    new Autonumeric('#depositAmount');
   }
   onSubmit() {
     const depositInfo = this.depositForm.value;
